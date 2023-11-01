@@ -24,9 +24,10 @@ import me.minetsh.imaging.core.util.IMGUtils;
 
 public class IMGEditActivity extends IMGEditBaseActivity {
 
-    private static final int MAX_WIDTH = 1024;
+    private static final int MAX_WIDTH = 1024*2;
 
-    private static final int MAX_HEIGHT = 1024;
+    private static final int MAX_HEIGHT = 1024*15;
+    private static final int maxImageSquare = 8 * 1024 * 1024;
 
     public static final String EXTRA_IMAGE_URI = "IMAGE_URI";
 
@@ -96,6 +97,38 @@ public class IMGEditActivity extends IMGEditBaseActivity {
         return bitmap;
     }
 
+    public boolean isLongImage(int width,int height){
+        int max = Math.max(width,height);
+        int min = Math.min(width,height);
+        return max > min * 3 && (min > 200 || width * height > maxImageSquare);
+    }
+
+    public int inSampleSize(int width,int height){
+        int max = Math.max(width,height);
+        int min = Math.min(width,height);
+        int inSampleSize = 1;
+        if(isLongImage(width,height)){
+            if (min > MAX_WIDTH) {
+                inSampleSize = IMGUtils.inSampleSize(Math.round(1f * min / MAX_WIDTH));
+            }
+
+            if (max > MAX_HEIGHT) {
+                inSampleSize = Math.max(inSampleSize,
+                        IMGUtils.inSampleSize(Math.round(1f * max / MAX_HEIGHT)));
+            }
+        }else {
+            if(width * height > maxImageSquare){
+
+                while ((width * height)/inSampleSize *inSampleSize > maxImageSquare){
+                    inSampleSize = inSampleSize * 2;
+                }
+            }
+        }
+        return inSampleSize;
+
+    }
+
+
     @Override
     public void onText(IMGText text) {
         mImgView.addStickerText(text);
@@ -139,7 +172,7 @@ public class IMGEditActivity extends IMGEditBaseActivity {
                 FileOutputStream fout = null;
                 try {
                     fout = new FileOutputStream(path);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fout);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fout);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 } finally {
