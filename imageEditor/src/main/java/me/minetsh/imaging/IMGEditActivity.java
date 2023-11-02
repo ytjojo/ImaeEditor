@@ -26,9 +26,9 @@ import me.minetsh.imaging.core.util.ImageSaveNotifyAblumUtil;
 
 public class IMGEditActivity extends IMGEditBaseActivity {
 
-    private static final int MAX_WIDTH = 1024*2;
+    private static final int MAX_WIDTH = 1024 * 2;
 
-    private static final int MAX_HEIGHT = 1024*15;
+    private static final int MAX_HEIGHT = 1024 * 15;
     private static final int maxImageSquare = 8 * 1024 * 1024;
 
     public static final String EXTRA_IMAGE_URI = "IMAGE_URI";
@@ -102,17 +102,17 @@ public class IMGEditActivity extends IMGEditBaseActivity {
         return bitmap;
     }
 
-    public boolean isLongImage(int width,int height){
-        int max = Math.max(width,height);
-        int min = Math.min(width,height);
+    public boolean isLongImage(int width, int height) {
+        int max = Math.max(width, height);
+        int min = Math.min(width, height);
         return max > min * 3 && (min > 200 || width * height > maxImageSquare);
     }
 
-    public int inSampleSize(int width,int height){
-        int max = Math.max(width,height);
-        int min = Math.min(width,height);
+    public int inSampleSize(int width, int height) {
+        int max = Math.max(width, height);
+        int min = Math.min(width, height);
         int inSampleSize = 1;
-        if(isLongImage(width,height)){
+        if (isLongImage(width, height)) {
             if (min > MAX_WIDTH) {
                 inSampleSize = IMGUtils.inSampleSize(Math.round(1f * min / MAX_WIDTH));
             }
@@ -121,10 +121,10 @@ public class IMGEditActivity extends IMGEditBaseActivity {
                 inSampleSize = Math.max(inSampleSize,
                         IMGUtils.inSampleSize(Math.round(1f * max / MAX_HEIGHT)));
             }
-        }else {
-            if(width * height > maxImageSquare){
+        } else {
+            if (width * height > maxImageSquare) {
 
-                while ((width * height)/inSampleSize *inSampleSize > maxImageSquare){
+                while ((width * height) / inSampleSize * inSampleSize > maxImageSquare) {
                     inSampleSize = inSampleSize * 2;
                 }
             }
@@ -172,12 +172,12 @@ public class IMGEditActivity extends IMGEditBaseActivity {
     public void onDoneClick() {
         String path = getIntent().getStringExtra(EXTRA_IMAGE_SAVE_PATH);
         if (!TextUtils.isEmpty(path)) {
-            File targetFile =  new File(path);
+            File targetFile = new File(path);
             File parentFile = targetFile.getParentFile();
-            if(!parentFile.exists()){
+            if (!parentFile.exists()) {
                 parentFile.mkdirs();
             }
-            if(targetFile.exists()){
+            if (targetFile.exists()) {
                 targetFile.deleteOnExit();
             }
             Bitmap bitmap = mImgView.saveBitmap();
@@ -197,12 +197,12 @@ public class IMGEditActivity extends IMGEditBaseActivity {
                         }
                     }
                 }
-                ImageSaveNotifyAblumUtil.onSaveTaskDone(this,path);
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(SAVE_FILE_PATH, path);
-                boolean isEdited =  mImgView.isEdited();
-                returnIntent.putExtra(IMAGE_IS_EDIT,isEdited);
-                setResult(RESULT_OK);
+                ImageSaveNotifyAblumUtil.onSaveTaskDone(this, path);
+                Intent dataIntent = new Intent();
+                dataIntent.putExtra(SAVE_FILE_PATH, path);
+                boolean isEdited = mImgView.isEdited();
+                dataIntent.putExtra(IMAGE_IS_EDIT, isEdited);
+                setResult(RESULT_OK, dataIntent);
                 finish();
                 return;
             }
