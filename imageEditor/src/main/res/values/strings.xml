@@ -5,5 +5,7 @@
 
     <string name="image_enable_storage_tips">相册功能需要使用到存储权限，请在设置中开启此应用的存储权限</string>
     <string name="image_eraser">橡皮擦</string>
+    <string name="image_saving_hint">图片保存中...</string>
+    <string name="image_save_error">图片保存失败</string>
 
 </resources>

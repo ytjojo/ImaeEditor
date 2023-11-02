@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import me.minetsh.imaging.core.file.IMGAssetFileDecoder;
 import me.minetsh.imaging.core.file.IMGDecoder;
 import me.minetsh.imaging.core.file.IMGFileDecoder;
 import me.minetsh.imaging.core.util.IMGUtils;
+import me.minetsh.imaging.core.util.ImageSaveNotifyAblumUtil;
 
 /**
  * Created by felix on 2017/11/14 下午2:26.
@@ -32,6 +34,9 @@ public class IMGEditActivity extends IMGEditBaseActivity {
     public static final String EXTRA_IMAGE_URI = "IMAGE_URI";
 
     public static final String EXTRA_IMAGE_SAVE_PATH = "IMAGE_SAVE_PATH";
+    public static final String SAVE_FILE_PATH = "save_file_path";
+
+    public static final String IMAGE_IS_EDIT = "image_is_edit";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +172,14 @@ public class IMGEditActivity extends IMGEditBaseActivity {
     public void onDoneClick() {
         String path = getIntent().getStringExtra(EXTRA_IMAGE_SAVE_PATH);
         if (!TextUtils.isEmpty(path)) {
+            File targetFile =  new File(path);
+            File parentFile = targetFile.getParentFile();
+            if(!parentFile.exists()){
+                parentFile.mkdirs();
+            }
+            if(targetFile.exists()){
+                targetFile.deleteOnExit();
+            }
             Bitmap bitmap = mImgView.saveBitmap();
             if (bitmap != null) {
                 FileOutputStream fout = null;
@@ -184,6 +197,11 @@ public class IMGEditActivity extends IMGEditBaseActivity {
                         }
                     }
                 }
+                ImageSaveNotifyAblumUtil.onSaveTaskDone(this,path);
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(SAVE_FILE_PATH, path);
+                boolean isEdited =  mImgView.isEdited();
+                returnIntent.putExtra(IMAGE_IS_EDIT,isEdited);
                 setResult(RESULT_OK);
                 finish();
                 return;

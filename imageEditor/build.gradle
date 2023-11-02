@@ -1,15 +1,22 @@
 apply plugin: 'com.android.library'
 
+ext {
+    bintrayName = 'imageEditor'
+    artifact = bintrayName
+    libraryName = 'image editor sdk'
+    libraryDescription = 'imageeditor'
+    libraryVersion = "1.0.0"
+}
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     resourcePrefix "image_"
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
     }
 
     buildTypes {
@@ -25,3 +32,4 @@ dependencies {
     implementation "androidx.multidex:multidex:2.0.1"
     implementation 'androidx.core:core:1.5.0-beta02'
 }
+apply from: '../mevenUpload.gradle'

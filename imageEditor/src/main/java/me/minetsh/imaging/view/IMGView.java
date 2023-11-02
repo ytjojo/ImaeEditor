@@ -10,10 +10,7 @@ import android.graphics.CornerPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.graphics.Xfermode;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -175,9 +172,6 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
         mPen.setColor(color);
     }
 
-    public boolean isDoodleEmpty() {
-        return mImage.isDoodleEmpty();
-    }
 
     public void undoDoodle() {
         mImage.undoDoodle();
@@ -647,4 +641,29 @@ public class IMGView extends FrameLayout implements Runnable, ScaleGestureDetect
             return new IMGPath(new Path(this.path), getMode(), getColor(), getWidth());
         }
     }
+
+    public boolean isEmptyMosaic() {
+        boolean hasMosaic = !mImage.isMosaicEmpty() || (mImage.getMode() == IMGMode.MOSAIC && !mPen.isEmpty());
+        return !hasMosaic;
+    }
+
+
+    public boolean isBackStickersEmpty() {
+        return mImage.isBackStickersEmpty();
+    }
+
+
+    public boolean isDoodleEmpty() {
+        return mImage.isDoodleEmpty();
+    }
+
+    public boolean isEmptyClip() {
+        return mImage.isEmptyClip();
+    }
+
+    public boolean isEdited() {
+        boolean isEmpty = isEmptyClip() && isEmptyMosaic() && isDoodleEmpty() && isBackStickersEmpty();
+        return !isEmpty;
+    }
+
 }

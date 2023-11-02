@@ -9,17 +9,18 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import me.minetsh.imaging.core.clip.IMGClip;
 import me.minetsh.imaging.core.clip.IMGClipWindow;
 import me.minetsh.imaging.core.homing.IMGHoming;
 import me.minetsh.imaging.core.sticker.IMGSticker;
 import me.minetsh.imaging.core.util.IMGUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by felix on 2017/11/21 下午10:03.
@@ -246,6 +247,30 @@ public class IMGImage {
             mMosaics.remove(mMosaics.size() - 1);
         }
     }
+
+    public boolean isBackStickersEmpty() {
+        return mBackStickers.isEmpty();
+    }
+
+    public boolean isEmptyClip() {
+        return getRotate() % 360f == 0f && equals(getClipFrame(),getFrame());
+    }
+
+    private Rect toRect(RectF rectF) {
+        int left = Math.round(rectF.left);
+        int top = Math.round(rectF.top);
+        int right = Math.round(rectF.right);
+        int bottom = Math.round(rectF.bottom);
+        return new Rect(left, top, right, bottom);
+    }
+
+    private boolean equals(RectF rectF1,RectF rectF2) {
+        return Math.abs(rectF1.left - rectF2.left) < 1f &&  Math.abs( rectF1.top - rectF2.top) < 1f
+                && Math.abs(rectF1.right - rectF2.right ) < 1f &&  Math.abs(rectF1.bottom - rectF2.bottom ) < 1f;
+
+    }
+
+
 
     public RectF getClipFrame() {
         return mClipFrame;

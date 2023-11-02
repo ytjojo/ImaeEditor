@@ -19,7 +19,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.minetsh.imaging.R;
+import me.minetsh.imaging.gallery.R;
 import me.minetsh.imaging.gallery.widget.IMGViewHolderCallback;
 
 /**
