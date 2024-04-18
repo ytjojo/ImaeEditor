@@ -22,12 +22,8 @@ public class ImageSaveNotifyAblumUtil {
 
     public static void onSaveTaskDone(Context context, String saveFilePath) {
 
-        ablumUpdate(context, saveFilePath);
-        File file = new File(saveFilePath);
-        ContentResolver localContentResolver = context.getContentResolver();
-        ContentValues localContentValues = getImageContentValues(file, System.currentTimeMillis());
-        localContentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, localContentValues);
 
+        File file = new File(saveFilePath);
         Intent localIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
         final Uri localUri = Uri.fromFile(file);
         localIntent.setData(localUri);

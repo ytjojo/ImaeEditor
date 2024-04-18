@@ -45,6 +45,8 @@ public class IMGEditActivity extends IMGEditBaseActivity {
 
     @Override
     public void onCreated() {
+        mImgView.setDoodlePaintStrokeWidth(Math.round(dip2px(3f)));
+        mImgView.setMosaicPaintStrokeWidth(Math.round(dip2px(10f)));
     }
 
     @Override
@@ -241,5 +243,11 @@ public class IMGEditActivity extends IMGEditBaseActivity {
     @Override
     public void onColorChanged(int checkedColor) {
         mImgView.setPenColor(checkedColor);
+    }
+
+
+    public float dip2px( float dpValue) {
+        final float scale = this.getApplication().getResources().getDisplayMetrics().density;
+        return(dpValue * scale + 0.5f);
     }
 }

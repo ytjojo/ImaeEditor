@@ -315,8 +315,8 @@ public class IMGImage {
 
         if (mMode == IMGMode.MOSAIC) {
 
-            int w = Math.round(mImage.getWidth() / 64f);
-            int h = Math.round(mImage.getHeight() / 64f);
+            int w = Math.round(mImage.getWidth() / 8f);
+            int h = Math.round(mImage.getHeight() / 8f);
 
             w = Math.max(w, 8);
             h = Math.max(h, 8);
@@ -410,7 +410,7 @@ public class IMGImage {
         }
     }
 
-    public void addPath(IMGPath path, float sx, float sy) {
+    public void addPath(IMGPath path, float sx, float sy,float currentScale) {
         if (path == null) return;
 
         float scale = 1f / getScale();
@@ -420,6 +420,7 @@ public class IMGImage {
         M.postTranslate(-mFrame.left, -mFrame.top);
         M.postScale(scale, scale);
         path.transform(M);
+        path.setOnTouchStartScale(currentScale);
 
         switch (path.getMode()) {
             case DOODLE:
@@ -557,7 +558,7 @@ public class IMGImage {
         }
     }
 
-    public int onDrawMosaicsPath(Canvas canvas) {
+    public int onDrawMosaicsPath(Canvas canvas,float mosaicPaintWidth) {
         int layerCount = canvas.saveLayer(mFrame, null, Canvas.ALL_SAVE_FLAG);
 
         if (!isMosaicEmpty()) {
@@ -566,7 +567,7 @@ public class IMGImage {
             canvas.translate(mFrame.left, mFrame.top);
             canvas.scale(scale, scale);
             for (IMGPath path : mMosaics) {
-                path.onDrawMosaic(canvas, mPaint);
+                path.onDrawMosaic(canvas, mPaint,scale,mosaicPaintWidth);
             }
             canvas.restore();
         }
@@ -579,14 +580,14 @@ public class IMGImage {
         canvas.restoreToCount(layerCount);
     }
 
-    public void onDrawDoodles(Canvas canvas) {
+    public void onDrawDoodles(Canvas canvas,float noodlePaintWidth) {
         if (!isDoodleEmpty()) {
             canvas.save();
             float scale = getScale();
             canvas.translate(mFrame.left, mFrame.top);
             canvas.scale(scale, scale);
             for (IMGPath path : mDoodles) {
-                path.onDrawDoodle(canvas, mPaint);
+                path.onDrawDoodle(canvas, mPaint,scale,noodlePaintWidth);
             }
             canvas.restore();
         }

@@ -1,11 +1,11 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'kotlin-android'
 ext {
     bintrayName = 'imageEditor'
     artifact = bintrayName
     libraryName = 'image editor sdk'
     libraryDescription = 'imageeditor'
-    libraryVersion = "1.0.3"
+    libraryVersion = "1.0.4"
 }
 android {
     compileSdkVersion 31
@@ -16,7 +16,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0.3"
+        versionName "1.0.4"
     }
 
     buildTypes {
@@ -31,5 +31,6 @@ android {
 dependencies {
     implementation "androidx.multidex:multidex:2.0.1"
     implementation 'androidx.core:core:1.5.0-beta02'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin_version}"
 }
 apply from: '../mevenUpload.gradle'

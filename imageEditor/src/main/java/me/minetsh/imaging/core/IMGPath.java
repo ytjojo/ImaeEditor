@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.util.Log;
 
 /**
  * Created by felix on 2017/11/22 下午6:13.
@@ -22,6 +21,8 @@ public class IMGPath {
     private float width = BASE_MOSAIC_WIDTH;
 
     private IMGMode mode = IMGMode.DOODLE;
+
+    private float mOnTouchStartScale = Float.NaN;
 
     public static final float BASE_DOODLE_WIDTH = 20f;
 
@@ -89,10 +90,18 @@ public class IMGPath {
         return width;
     }
 
-    public void onDrawDoodle(Canvas canvas, Paint paint) {
+    public void setOnTouchStartScale(float currentScale) {
+        this.mOnTouchStartScale = currentScale;
+    }
+
+    public float getOnTouchStartScale() {
+        return mOnTouchStartScale;
+    }
+
+    public void onDrawDoodle(Canvas canvas, Paint paint, float onDrawScale, float noodlePaintWidth) {
         if (mode == IMGMode.DOODLE) {
             paint.setColor(color);
-            paint.setStrokeWidth(BASE_DOODLE_WIDTH);
+            paint.setStrokeWidth(noodlePaintWidth / mOnTouchStartScale);
             if (color == Color.TRANSPARENT) {
                 paint.setColor(Color.BLACK);
                 paint.setXfermode(pMode);
@@ -104,9 +113,9 @@ public class IMGPath {
         }
     }
 
-    public void onDrawMosaic(Canvas canvas, Paint paint) {
+    public void onDrawMosaic(Canvas canvas, Paint paint, float onDrawScale, float mosaicPaintWidth) {
         if (mode == IMGMode.MOSAIC) {
-            paint.setStrokeWidth(width);
+            paint.setStrokeWidth(mosaicPaintWidth / mOnTouchStartScale);
             canvas.drawPath(path, paint);
         }
     }
