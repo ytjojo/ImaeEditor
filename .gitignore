@@ -3,8 +3,6 @@
 .externalNativeBuild
 
 
-## Project
-
 gradle/
 gradlew
 gradlew.bat
@@ -12,7 +10,6 @@ local.properties
 
 captures/
 
-# Created by .ignore support plugin (hsz.mobi)
 ### Maven template
 target/
 pom.xml.tag
@@ -53,4 +50,3 @@ fabric.properties
 
 /build
 */build
-
