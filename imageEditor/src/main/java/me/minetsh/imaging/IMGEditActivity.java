@@ -26,15 +26,9 @@ import me.minetsh.imaging.core.util.ImageSaveNotifyAblumUtil;
 
 public class IMGEditActivity extends IMGEditBaseActivity {
 
-<<<<<<< HEAD:image/src/main/java/me/minetsh/imaging/IMGEditActivity.java
-    private static final int MAX_WIDTH = 1024*2;
-
-    private static final int MAX_HEIGHT = 1024*15;
-=======
     private static final int MAX_WIDTH = 1024 * 2;
 
     private static final int MAX_HEIGHT = 1024 * 15;
->>>>>>> develop:imageEditor/src/main/java/me/minetsh/imaging/IMGEditActivity.java
     private static final int maxImageSquare = 8 * 1024 * 1024;
 
     public static final String EXTRA_IMAGE_URI = "IMAGE_URI";
@@ -110,19 +104,6 @@ public class IMGEditActivity extends IMGEditBaseActivity {
         return bitmap;
     }
 
-<<<<<<< HEAD:image/src/main/java/me/minetsh/imaging/IMGEditActivity.java
-    public boolean isLongImage(int width,int height){
-        int max = Math.max(width,height);
-        int min = Math.min(width,height);
-        return max > min * 3 && (min > 200 || width * height > maxImageSquare);
-    }
-
-    public int inSampleSize(int width,int height){
-        int max = Math.max(width,height);
-        int min = Math.min(width,height);
-        int inSampleSize = 1;
-        if(isLongImage(width,height)){
-=======
     public boolean isLongImage(int width, int height) {
         int max = Math.max(width, height);
         int min = Math.min(width, height);
@@ -134,7 +115,6 @@ public class IMGEditActivity extends IMGEditBaseActivity {
         int min = Math.min(width, height);
         int inSampleSize = 1;
         if (isLongImage(width, height)) {
->>>>>>> develop:imageEditor/src/main/java/me/minetsh/imaging/IMGEditActivity.java
             if (min > MAX_WIDTH) {
                 inSampleSize = IMGUtils.inSampleSize(Math.round(1f * min / MAX_WIDTH));
             }
@@ -143,17 +123,10 @@ public class IMGEditActivity extends IMGEditBaseActivity {
                 inSampleSize = Math.max(inSampleSize,
                         IMGUtils.inSampleSize(Math.round(1f * max / MAX_HEIGHT)));
             }
-<<<<<<< HEAD:image/src/main/java/me/minetsh/imaging/IMGEditActivity.java
-        }else {
-            if(width * height > maxImageSquare){
-
-                while ((width * height)/inSampleSize *inSampleSize > maxImageSquare){
-=======
         } else {
             if (width * height > maxImageSquare) {
 
                 while ((width * height) / inSampleSize * inSampleSize > maxImageSquare) {
->>>>>>> develop:imageEditor/src/main/java/me/minetsh/imaging/IMGEditActivity.java
                     inSampleSize = inSampleSize * 2;
                 }
             }
